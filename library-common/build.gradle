@@ -12,8 +12,6 @@ android {
     defaultConfig {
         minSdkVersion Integer.valueOf(gradle.minSdkVersion)
         targetSdkVersion Integer.valueOf(gradle.targetSdkVersion)
-        versionCode Integer.valueOf(gradle.versionCode)
-        versionName gradle.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -27,7 +25,7 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
+        viewBinding true
     }
 }
 

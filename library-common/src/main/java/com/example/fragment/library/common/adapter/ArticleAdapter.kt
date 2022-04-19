@@ -48,7 +48,7 @@ class ArticleAdapter : BaseAdapter<ArticleBean>() {
             val url = Uri.encode(item.link)
             activity.navigation(Router.WEB, bundleOf(Keys.URL to url))
         }
-        binding.author.text = if (item.author.isNotBlank()) item.author else "匿名"
+        binding.author.text = item.author.ifBlank { "匿名" }
         binding.avatar.load(avatarList[position % 6]) {
             crossfade(true)
             transformations(CircleCropTransformation())

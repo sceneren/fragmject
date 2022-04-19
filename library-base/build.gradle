@@ -12,11 +12,6 @@ android {
     defaultConfig {
         minSdkVersion Integer.valueOf(gradle.minSdkVersion)
         targetSdkVersion Integer.valueOf(gradle.targetSdkVersion)
-        versionCode Integer.valueOf(gradle.versionCode)
-        versionName gradle.versionName
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -27,7 +22,7 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
+        viewBinding true
     }
 }
 
@@ -44,7 +39,6 @@ dependencies {
     api rootProject.ext.dependencies["androidx-navigation-fragment-ktx"]
     api rootProject.ext.dependencies["androidx-navigation-ui-ktx"]
     api rootProject.ext.dependencies["androidx-room-runtime"]
-    annotationProcessor rootProject.ext.dependencies["androidx-room-compiler"]
     kapt rootProject.ext.dependencies["androidx-room-compiler"]
     api rootProject.ext.dependencies["androidx-room-ktx"]
     api rootProject.ext.dependencies["coil-kt"]
@@ -59,8 +53,4 @@ dependencies {
     api rootProject.ext.dependencies["squareup-okhttp"]
     api rootProject.ext.dependencies["squareup-okhttp-logging-interceptor"]
     api rootProject.ext.dependencies["tencent-tbs"]
-
-    api 'junit:junit:4.13.2'
-    api 'androidx.test.ext:junit:1.1.2'
-    api 'androidx.test.espresso:espresso-core:3.3.0'
 }

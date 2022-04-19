@@ -12,10 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Splash"
         android:usesCleartextTraffic="true"
-        tools:targetApi="lollipop">
+        tools:targetApi="n">
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenSize|fontScale|density|orientation"
+            android:exported="true"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
