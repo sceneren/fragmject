@@ -21,21 +21,6 @@ object WanHelper {
     private const val USER = "user"
 
     /**
-     * status :
-     *       0 : 关闭,
-     *       1 : 开启,
-     */
-    fun setScreenRecord(status: String) {
-        KVDatabase.set(SCREEN_RECORD, status)
-    }
-
-    fun getScreenRecord(status: (String) -> Unit) {
-        KVDatabase.get(SCREEN_RECORD) {
-            status.invoke(it)
-        }
-    }
-
-    /**
      * 设置搜索历史
      */
     fun setSearchHistory(list: List<String>) {
@@ -47,14 +32,13 @@ object WanHelper {
      */
     fun getSearchHistory(result: (List<String>) -> Unit) {
         KVDatabase.get(SEARCH_HISTORY) {
-            result.invoke(
-                try {
-                    Gson().fromJson(it, object : TypeToken<List<String>>() {}.type)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    ArrayList()
-                }
-            )
+            val list: List<String> = try {
+                Gson().fromJson(it, object : TypeToken<List<String>>() {}.type) ?: ArrayList()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ArrayList()
+            }
+            result.invoke(list)
         }
     }
 
@@ -90,6 +74,19 @@ object WanHelper {
     }
 
     /**
+     * status :
+     *       0 : 关闭,
+     *       1 : 开启,
+     */
+    fun setScreenRecord(status: String) {
+        KVDatabase.set(SCREEN_RECORD, status)
+    }
+
+    fun getScreenRecord(result: (String) -> Unit) {
+        KVDatabase.get(SCREEN_RECORD) { result.invoke(it) }
+    }
+
+    /**
      * 设置用户信息
      */
     fun setUser(userBean: UserBean) {
@@ -99,14 +96,15 @@ object WanHelper {
     /**
      * 获取用户信息
      */
-    fun getUser(userBean: (UserBean) -> Unit) {
+    fun getUser(result: (UserBean) -> Unit) {
         KVDatabase.get(USER) {
-            try {
-                userBean.invoke(Gson().fromJson(it, UserBean::class.java))
+            val userBean = try {
+                Gson().fromJson(it, UserBean::class.java) ?: UserBean()
             } catch (e: Exception) {
                 e.printStackTrace()
-                userBean.invoke(UserBean())
+                UserBean()
             }
+            result.invoke(userBean)
         }
     }
 

@@ -6,22 +6,14 @@ import android.view.LayoutInflater
 import android.view.WindowManager
 import androidx.activity.viewModels
 import com.example.fragment.library.common.activity.RouterActivity
-import com.example.fragment.library.common.bean.UserBean
 import com.example.fragment.library.common.constant.Router
 import com.example.fragment.module.user.model.UserViewModel
-import com.example.fragment.module.wan.model.NavigationViewModel
-import com.example.fragment.module.wan.model.ProjectViewModel
-import com.example.fragment.module.wan.model.SystemViewModel
 import com.example.fragment.project.R
 import com.example.fragment.project.databinding.MainActivityBinding
 
 class MainActivity : RouterActivity() {
 
-    private val navigationViewModel: NavigationViewModel by viewModels()
-    private val projectViewModel: ProjectViewModel by viewModels()
-    private val systemViewModel: SystemViewModel by viewModels()
-    private val userViewModel: UserViewModel by viewModels()
-    private var userBean = UserBean()
+    private val viewModel: UserViewModel by viewModels()
 
     override fun controllerId(): Int {
         return R.id.nav_host_fragment_main
@@ -29,11 +21,12 @@ class MainActivity : RouterActivity() {
 
     /**
      * 导航方法，根据路由名跳转Fragment
+     * [一文看懂Navigation](https://juejin.cn/post/7036296113573347364)
      */
     override fun navigation(name: Router, bundle: Bundle?) {
         //登录态校验
         if (loginRequired(name)) {
-            navigate("user/login")
+            navigate("user/login", bundle)
         } else when (name) {
             Router.COIN2RANK -> navigate("coin/rank", bundle)
             Router.MAIN -> popBackStack(R.id.main, false)
@@ -46,6 +39,7 @@ class MainActivity : RouterActivity() {
             Router.SYSTEM -> navigate("system/{cid}", bundle)
             Router.SYSTEM_URL -> navigate("system/url/{url}", bundle)
             Router.USER_AVATAR -> navigate("user/avatar", bundle)
+            Router.USER_CITY -> navigate("user/city", bundle)
             Router.USER_INFO -> navigate("user/info", bundle)
             Router.USER_LOGIN -> navigate("user/login", bundle)
             Router.USER_REGISTER -> navigate("user/register", bundle)
@@ -64,24 +58,10 @@ class MainActivity : RouterActivity() {
         initLoad()
     }
 
-    private fun initViewModel() {
-        userViewModel.userResult.observe(this) { userBean = it }
-    }
+    private fun initViewModel() {}
 
     private fun initLoad() {
-        //接口预加载
-        if (navigationViewModel.navigationResult.value == null) {
-            navigationViewModel.getNavigation()
-        }
-        if (projectViewModel.projectTreeResult.value == null) {
-            projectViewModel.getProjectTree()
-        }
-        if (systemViewModel.systemTreeResult.value == null) {
-            systemViewModel.getSystemTree()
-        }
-        if (userViewModel.userResult.value == null) {
-            userViewModel.getUser()
-        }
+        viewModel.getUser()
     }
 
     private fun loginRequired(name: Router): Boolean {
@@ -92,7 +72,7 @@ class MainActivity : RouterActivity() {
             Router.USER_AVATAR,
             Router.USER_SHARE
         )
-        return loginRouter.contains(name) && userBean.id.isBlank()
+        return loginRouter.contains(name) && viewModel.getUserId().isBlank()
     }
 
 }

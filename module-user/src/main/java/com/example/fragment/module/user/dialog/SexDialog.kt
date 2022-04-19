@@ -1,5 +1,6 @@
 package com.example.fragment.module.user.dialog
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,11 +34,13 @@ class SexDialog : BottomDialog() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        setNavigationBar(binding.root, Color.TRANSPARENT, true)
         _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setNavigationBar(binding.root, Color.WHITE, true)
         sexViews.add(binding.secrecy)
         sexViews.add(binding.male)
         sexViews.add(binding.female)
@@ -62,6 +65,14 @@ class SexDialog : BottomDialog() {
         selectionSex(sexIndex)
     }
 
+    private fun selectionSex(index: Int) {
+        sexIndex = index
+        sexViews.forEach {
+            it.isSelected = false
+        }
+        sexViews[sexIndex].isSelected = true
+    }
+
     fun setSex(sex: String): SexDialog {
         if ("保密" == sex) {
             sexIndex = 0
@@ -78,14 +89,6 @@ class SexDialog : BottomDialog() {
     fun setSexListener(listener: SexListener): SexDialog {
         this.listener = listener
         return this
-    }
-
-    private fun selectionSex(index: Int) {
-        sexIndex = index
-        sexViews.forEach {
-            it.isSelected = false
-        }
-        sexViews[sexIndex].isSelected = true
     }
 
     interface SexListener {

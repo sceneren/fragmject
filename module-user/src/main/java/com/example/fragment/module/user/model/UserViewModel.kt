@@ -9,15 +9,23 @@ class UserViewModel : BaseViewModel() {
 
     val userResult = MutableLiveData<UserBean>()
 
-    fun getUser() {
+    fun getUserId(): String{
+        return userResult.value?.id ?: ""
+    }
+
+    fun getUserBean(): UserBean{
+        return userResult.value ?: UserBean()
+    }
+
+    fun updateUserBean(userBean: UserBean) {
+        WanHelper.setUser(userBean)
+        userResult.postValue(userBean)
+    }
+
+    fun getUser(){
         WanHelper.getUser {
             userResult.postValue(it)
         }
-    }
-
-    fun updateUser(userBean: UserBean) {
-        WanHelper.setUser(userBean)
-        userResult.postValue(userBean)
     }
 
 }

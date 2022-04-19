@@ -10,11 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
+import com.example.fragment.library.base.dialog.FullDialog
 import com.example.miaow.picture.bean.StickerAttrs
 import com.example.miaow.picture.databinding.PictureTextDialogBinding
 import com.example.miaow.picture.utils.ColorUtils
 
-class PictureTextDialog : PictureBaseDialog() {
+class PictureTextDialog : FullDialog() {
 
     companion object {
         @JvmStatic
@@ -29,16 +30,6 @@ class PictureTextDialog : PictureBaseDialog() {
     private var _attrs: StickerAttrs? = null
     private val attrs get() = _attrs!!
     private var callback: TextFinishCallback? = null
-
-    fun setStickerAttrs(attrs: StickerAttrs?): PictureTextDialog {
-        this._attrs = attrs
-        return this
-    }
-
-    fun setTextFinishCallback(callback: TextFinishCallback): PictureTextDialog {
-        this.callback = callback
-        return this
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,10 +47,9 @@ class PictureTextDialog : PictureBaseDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupView()
-    }
-
-    private fun setupView() {
+        dialog?.window?.apply {
+            setDimAmount(1f)
+        }
         textColors.add(binding.textWhite)
         textColors.add(binding.textBlack)
         textColors.add(binding.textRed)
@@ -67,9 +57,9 @@ class PictureTextDialog : PictureBaseDialog() {
         textColors.add(binding.textGreen)
         textColors.add(binding.textBlue)
         textColors.add(binding.textPurple)
-        textColors.forEachIndexed { index, view ->
-            view.setOnClickListener {
-                selectedColor(view)
+        textColors.forEachIndexed { index, colorView ->
+            colorView.setOnClickListener {
+                selectedColor(colorView)
                 binding.editText.setTextColor(ColorUtils.colorful[index])
             }
         }
@@ -137,6 +127,16 @@ class PictureTextDialog : PictureBaseDialog() {
         canvas.drawColor(Color.TRANSPARENT)
         binding.editText.draw(canvas)
         return bitmap
+    }
+
+    fun setStickerAttrs(attrs: StickerAttrs?): PictureTextDialog {
+        this._attrs = attrs
+        return this
+    }
+
+    fun setTextFinishCallback(callback: TextFinishCallback): PictureTextDialog {
+        this.callback = callback
+        return this
     }
 
 }

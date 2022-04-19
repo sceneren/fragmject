@@ -11,17 +11,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
+import com.example.fragment.library.base.dialog.FullDialog
+import com.example.fragment.library.base.utils.ActivityCallback
+import com.example.fragment.library.base.utils.ActivityResultHelper.startForResult
 import com.example.miaow.picture.bean.StickerAttrs
 import com.example.miaow.picture.databinding.PictureEditorDialogBinding
 import com.example.miaow.picture.editor.PictureEditorView
 import com.example.miaow.picture.editor.layer.OnStickerClickListener
-import com.example.miaow.picture.utils.ActivityCallback
-import com.example.miaow.picture.utils.ActivityHelper.startForResult
 import com.example.miaow.picture.utils.AlbumUtils.getImagePath
 import com.example.miaow.picture.utils.AlbumUtils.saveSystemAlbum
 import com.example.miaow.picture.utils.ColorUtils
 
-class PictureEditorDialog : PictureBaseDialog() {
+class PictureEditorDialog : FullDialog() {
 
     companion object {
         @JvmStatic
@@ -36,16 +37,6 @@ class PictureEditorDialog : PictureBaseDialog() {
     private val tools: MutableList<ImageView> = arrayListOf()
     private var bitmapPath = ""
     private var callback: EditorFinishCallback? = null
-
-    fun setBitmapPath(path: String): PictureEditorDialog {
-        this.bitmapPath = path
-        return this
-    }
-
-    fun setEditorFinishCallback(callback: EditorFinishCallback): PictureEditorDialog {
-        this.callback = callback
-        return this
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,6 +54,9 @@ class PictureEditorDialog : PictureBaseDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dialog?.window?.apply {
+            setDimAmount(1f)
+        }
         colors.add(binding.white)
         colors.add(binding.black)
         colors.add(binding.red)
@@ -117,7 +111,7 @@ class PictureEditorDialog : PictureBaseDialog() {
                             tool.isSelected = false
                         }
                         3 -> {
-                            openClipDialog( binding.picEditor.saveBitmap())
+                            openClipDialog(binding.picEditor.saveBitmap())
                             tool.isSelected = false
                         }
                         4 -> {
@@ -130,6 +124,16 @@ class PictureEditorDialog : PictureBaseDialog() {
                 }
             }
         }
+    }
+
+    fun setBitmapPath(path: String): PictureEditorDialog {
+        this.bitmapPath = path
+        return this
+    }
+
+    fun setEditorFinishCallback(callback: EditorFinishCallback): PictureEditorDialog {
+        this.callback = callback
+        return this
     }
 
     private fun openAlbum() {

@@ -13,9 +13,8 @@
 - 屏幕录制、图片编辑、字节码插桩...
 
 ## 截图展示
-| ![1.jpg](https://gitee.com/zhao.git/PictureWarehouse/raw/master/FragmentProject/device-2021-11-25-100723.png) | ![2.jpg](https://gitee.com/zhao.git/PictureWarehouse/raw/master/FragmentProject/device-2021-11-25-100805.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![3.jpg](https://gitee.com/zhao.git/PictureWarehouse/raw/master/FragmentProject/device-2021-11-25-101002.png) | ![4.jpg](https://gitee.com/zhao.git/PictureWarehouse/raw/master/FragmentProject/device-2021-11-29-171800.png) |
+| ![1.jpg](https://raw.githubusercontent.com/miaowmiaow/fragmject/master/screenshot/device-2022-03-24-095501.png) | ![2.jpg](https://raw.githubusercontent.com/miaowmiaow/fragmject/master/screenshot/device-2022-03-24-095527.png) | ![3.jpg](https://raw.githubusercontent.com/miaowmiaow/fragmject/master/screenshot/device-2022-03-24-100242.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 
 ## 项目目录结构
 ```
@@ -279,10 +278,19 @@ clip.saveBitmap()
 - [square/retrofit](https://github.com/square/retrofit)
 - [tencent/x5](https://x5.tencent.com/)
 
+## Gitee镜像
+- [fragmject](https://gitee.com/zhao.git/FragmentProject.git)
+
 ## Thanks
   感谢所有优秀的开源项目 ^_^   
   如果喜欢的话希望给个 Star 或 Fork ^_^  
   谢谢~~  
+  
+## About me
+- QQ : 237934622
+- WeChat : zst_1116
+- Email : <zst_1116@icloud.com>
+- JueJin：[miaowmiaow](https://juejin.cn/user/3342971112791422)
   
 ## LICENSE
 ```

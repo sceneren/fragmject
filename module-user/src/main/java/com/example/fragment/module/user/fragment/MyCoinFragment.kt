@@ -69,6 +69,10 @@ class MyCoinFragment : RouterFragment() {
                 viewModel.getMyCoinNext()
             }
         })
+        binding.coordinator.post {
+            binding.coordinator.setMaxScrollY(binding.coinCount.height)
+            binding.pullRefresh.layoutParams.height = binding.coordinator.height
+        }
     }
 
     override fun initViewModel(): BaseViewModel {
@@ -100,7 +104,7 @@ class MyCoinFragment : RouterFragment() {
 
     override fun initLoad() {
         if (viewModel.myCoinResult.value == null) {
-            viewModel.getMyCoin()
+            binding.pullRefresh.setRefreshing()
         }
     }
 

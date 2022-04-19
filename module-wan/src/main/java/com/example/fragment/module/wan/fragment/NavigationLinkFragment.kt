@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.os.bundleOf
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fragment.library.base.adapter.BaseAdapter
 import com.example.fragment.library.base.model.BaseViewModel
@@ -29,24 +29,30 @@ class NavigationLinkFragment : RouterFragment() {
         }
     }
 
-    private val viewModel: NavigationViewModel by activityViewModels()
+    private val viewModel: NavigationViewModel by viewModels()
     private var _binding: NavigationLinkFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val linkMenuAdapter = LinkMenuAdapter()
     private val linkMenuSelectedListener = object : BaseAdapter.OnItemSelectedListener {
-        override fun onItemSelected(holder: BaseAdapter.ViewBindHolder, position: Int) {
-            linkMenuAdapter.getItem(position).let { item ->
-                item.isSelected = true
-                linkMenuAdapter.notifyItemRangeChanged(position, 1)
-                fillFlexboxLayout(item.articles)
+        override fun onItemSelected(itemView: View, position: Int) {
+            val item = linkMenuAdapter.getItem(position)
+            item.isSelected = true
+            binding.menu.findViewHolderForAdapterPosition(position)?.apply {
+                if (this is BaseAdapter.ViewBindHolder) {
+                    getView<View>(R.id.bg)?.setBackgroundResource(R.drawable.layer_while_item_bottom)
+                }
             }
+            fillFlexboxLayout(item.articles)
         }
 
-        override fun onItemUnselected(holder: BaseAdapter.ViewBindHolder, position: Int) {
-            linkMenuAdapter.getItem(position).let { item ->
-                item.isSelected = false
-                linkMenuAdapter.notifyItemRangeChanged(position, 1)
+        override fun onItemUnselected(itemView: View, position: Int) {
+            val item = linkMenuAdapter.getItem(position)
+            item.isSelected = false
+            binding.menu.findViewHolderForAdapterPosition(position)?.apply {
+                if (this is BaseAdapter.ViewBindHolder) {
+                    getView<View>(R.id.bg)?.setBackgroundResource(R.drawable.layer_gray_item_bottom)
+                }
             }
         }
     }
@@ -90,7 +96,7 @@ class NavigationLinkFragment : RouterFragment() {
 
     override fun initLoad() {
         if (viewModel.navigationResult.value == null) {
-            viewModel.getNavigation(true)
+            viewModel.getNavigation()
         }
     }
 

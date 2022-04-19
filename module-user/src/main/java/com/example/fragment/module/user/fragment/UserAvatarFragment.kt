@@ -7,17 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import coil.load
 import com.example.fragment.library.base.dialog.PermissionDialog
 import com.example.fragment.library.base.model.BaseViewModel
 import com.example.fragment.library.base.utils.ActivityCallback
 import com.example.fragment.library.base.utils.ActivityResultHelper.requestStorage
 import com.example.fragment.library.base.utils.ActivityResultHelper.startForResult
 import com.example.fragment.library.base.utils.PermissionsCallback
-import com.example.fragment.library.common.bean.UserBean
+import com.example.fragment.library.base.utils.loadCircleCrop
+import com.example.fragment.library.base.utils.loadRoundedCorners
 import com.example.fragment.library.common.fragment.RouterFragment
-import com.example.fragment.module.user.model.UserViewModel
+import com.example.fragment.module.user.R
 import com.example.fragment.module.user.databinding.UserAvatarFragmentBinding
+import com.example.fragment.module.user.model.UserViewModel
 import com.example.miaow.picture.dialog.EditorFinishCallback
 import com.example.miaow.picture.dialog.PictureEditorDialog
 import com.example.miaow.picture.utils.AlbumUtils.getImagePath
@@ -28,8 +29,6 @@ class UserAvatarFragment : RouterFragment() {
     private val viewModel: UserViewModel by activityViewModels()
     private var _binding: UserAvatarFragmentBinding? = null
     private val binding get() = _binding!!
-
-    private var userBean = UserBean()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +46,7 @@ class UserAvatarFragment : RouterFragment() {
 
     override fun initView() {
         binding.black.setOnClickListener { activity.onBackPressed() }
+        binding.image.loadCircleCrop(R.drawable.avatar_1_raster)
         binding.album.setOnClickListener {
             activity.requestStorage(object : PermissionsCallback {
                 override fun allow() {
@@ -62,9 +62,8 @@ class UserAvatarFragment : RouterFragment() {
 
     override fun initViewModel(): BaseViewModel {
         viewModel.userResult.observe(viewLifecycleOwner) {
-            userBean = it
-            if (userBean.avatar.isNotBlank()) {
-                binding.image.load(File(userBean.avatar))
+            if (it.avatar.isNotBlank()) {
+                binding.image.loadCircleCrop(File(it.avatar))
             }
         }
         return viewModel
@@ -93,8 +92,10 @@ class UserAvatarFragment : RouterFragment() {
             .setBitmapPath(path)
             .setEditorFinishCallback(object : EditorFinishCallback {
                 override fun onFinish(path: String) {
-                    userBean.avatar = path
-                    viewModel.updateUser(userBean)
+                    viewModel.getUserBean().let {
+                        it.avatar = path
+                        viewModel.updateUserBean(it)
+                    }
                 }
             })
             .show(childFragmentManager)

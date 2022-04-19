@@ -58,7 +58,7 @@ class LoadMoreAdapter(
         if (getItemViewType(position) == TYPE_LOAD_MORE) {
             val view = holder.itemView.findViewById<AppCompatTextView>(TYPE_LOAD_MORE)
             view.text = if (itemCount > 1) {
-                if (parentView.canLoadMore()) {
+                if (parentView.isLoading()) {
                     "正在加载..."
                 } else "没有更多了。"
             } else ""
@@ -67,6 +67,7 @@ class LoadMoreAdapter(
         if (itemCount > 1 && position >= itemCount - PRELOADING_NUMBER) {
             if (parentView.canLoadMore()) {
                 parentView.loadMoreListener?.onLoadMore(parentView)
+                parentView.finishLoadMore()
             }
         }
     }

@@ -61,13 +61,13 @@ abstract class KVDatabase : RoomDatabase() {
 
     fun get(key: String, result: (String) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-            try {
-                getDao().findByKey(key)?.value?.let {
-                    result.invoke(it)
-                }
+            val value = try {
+                getDao().findByKey(key)?.value ?: ""
             } catch (e: Exception) {
                 e.printStackTrace()
+                ""
             }
+            result.invoke(value)
         }
     }
 

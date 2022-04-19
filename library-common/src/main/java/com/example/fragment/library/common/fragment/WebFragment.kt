@@ -16,13 +16,6 @@ import com.tencent.smtt.sdk.WebView
 
 class WebFragment : RouterFragment() {
 
-    companion object {
-        @JvmStatic
-        fun newInstance(): WebFragment {
-            return WebFragment()
-        }
-    }
-
     private var _binding: WebFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -70,10 +63,7 @@ class WebFragment : RouterFragment() {
                     binding.progressBar.progress = newProgress
                 }
             })
-        if (!url.isNullOrBlank()) {
-            webViewHelper.loadUrl(url)
-        }
-        binding.statusBar.setStatusBarTheme(true)
+            .loadUrl(url)
         val onBackPressed = activity.onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             if (!webViewHelper.canGoBack()) {
                 this.isEnabled = false

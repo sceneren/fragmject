@@ -3,14 +3,12 @@ package com.example.fragment.library.base.activity
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.example.fragment.library.base.dialog.ProgressDialog
-import com.example.fragment.library.base.utils.StatusBarUtils
 import com.example.fragment.library.base.view.TipsView
+import com.example.fragment.library.base.view.statusBarHeight
 
 abstract class BaseActivity : AppCompatActivity() {
 
     private lateinit var tipsView: TipsView
-    private var progressDialog: ProgressDialog? = null
 
     override fun setContentView(view: View) {
         //添加顶部提示view
@@ -21,7 +19,7 @@ abstract class BaseActivity : AppCompatActivity() {
             RelativeLayout.LayoutParams.MATCH_PARENT,
             RelativeLayout.LayoutParams.WRAP_CONTENT
         ).also {
-            it.topMargin = StatusBarUtils.getStatusBarHeight(view.context)
+            it.topMargin = view.statusBarHeight()
         })
         super.setContentView(layout)
     }
@@ -42,16 +40,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun dismissTips() {
         tipsView.dismiss()
-    }
-
-    fun showProgress() {
-        progressDialog = ProgressDialog.newInstance()
-        progressDialog?.show(supportFragmentManager)
-    }
-
-    fun dismissProgress() {
-        progressDialog?.dismiss()
-        progressDialog = null
     }
 
 }

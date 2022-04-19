@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.fragment.library.base.dialog.FullDialog
 import com.example.miaow.picture.databinding.PictureClipDialogBinding
 import com.example.miaow.picture.utils.AlbumUtils.saveSystemAlbum
 
-class PictureClipDialog : PictureBaseDialog() {
+class PictureClipDialog : FullDialog() {
 
     companion object {
         @JvmStatic
@@ -21,17 +22,6 @@ class PictureClipDialog : PictureBaseDialog() {
     private lateinit var bitmap: Bitmap
     private var isSaving = false
     private var callback: ClipFinishCallback? = null
-
-    fun setBitmapResource(bitmap: Bitmap): PictureClipDialog {
-        this.bitmap = bitmap
-        return this
-    }
-
-    fun setClipFinishCallback(callback: ClipFinishCallback): PictureClipDialog {
-        this.callback = callback
-        return this
-    }
-
     private var _binding: PictureClipDialogBinding? = null
     private val binding get() = _binding!!
 
@@ -51,6 +41,9 @@ class PictureClipDialog : PictureBaseDialog() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dialog?.window?.apply {
+            setDimAmount(1f)
+        }
         binding.clip.setBitmapResource(bitmap)
         binding.rotate.setOnClickListener { binding.clip.rotate() }
         binding.reset.setOnClickListener { binding.clip.reset() }
@@ -66,6 +59,16 @@ class PictureClipDialog : PictureBaseDialog() {
                 }
             }
         }
+    }
+
+    fun setBitmapResource(bitmap: Bitmap): PictureClipDialog {
+        this.bitmap = bitmap
+        return this
+    }
+
+    fun setClipFinishCallback(callback: ClipFinishCallback): PictureClipDialog {
+        this.callback = callback
+        return this
     }
 
 }
