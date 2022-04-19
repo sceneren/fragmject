@@ -11,7 +11,7 @@ fun countDownCoroutines(
     total: Int,
     onTick: (Int) -> Unit,
     onFinish: () -> Unit,
-    scope: CoroutineScope = GlobalScope
+    scope: CoroutineScope
 ): Job {
     return flow {
         for (i in total downTo 0) {

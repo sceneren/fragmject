@@ -7,7 +7,6 @@ import android.content.MutableContextWrapper
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Looper
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -28,7 +27,6 @@ import com.tencent.smtt.sdk.WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE
 import kotlinx.coroutines.runBlocking
 import okio.ByteString.Companion.encodeUtf8
 import java.io.File
-import java.util.*
 
 class WebViewHelper private constructor(parent: ViewGroup) {
 
@@ -348,10 +346,8 @@ class WebViewManager private constructor() {
         webSetting.setSupportZoom(true)
         webSetting.displayZoomControls = false
         webSetting.useWideViewPort = true
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webSetting.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-            CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
-        }
+        webSetting.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+        CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
         webView.settingsExtension?.apply {
             setContentCacheEnable(true)
             setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY)
